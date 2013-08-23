@@ -31,25 +31,21 @@ public class scr_PlayerControls : MonoBehaviour {
         {
             if (Input.GetKey(KeyCode.W))
             {
-                //Debug.Log("Direction Input: Up");
                 facingDirection = FacingDirectionType.Up;
                 StartCoroutine(MoveATile(FacingDirectionType.Up, walkingSpeed));
             }
             else if (Input.GetKey(KeyCode.S))
             {
-                //Debug.Log("Direction Input: Down");
                 facingDirection = FacingDirectionType.Down;
                 StartCoroutine(MoveATile(FacingDirectionType.Down, walkingSpeed));
             }
             else if (Input.GetKey(KeyCode.A))
             {
-               // Debug.Log("Direction Input: Left");
                 facingDirection = FacingDirectionType.Left;
                 StartCoroutine(MoveATile(FacingDirectionType.Left, walkingSpeed));
             }
             else if (Input.GetKey(KeyCode.D))
             {
-                //Debug.Log("Direction Input: Right");
                 facingDirection = FacingDirectionType.Right;
                 StartCoroutine(MoveATile(FacingDirectionType.Right, walkingSpeed));
             }
