@@ -6,55 +6,103 @@ public class scr_PlayerControls : MonoBehaviour {
 		Up, Down, Left, Right
 	}
 	
-	private float walkingSpeed = 20.0f;
-	
+	public float walkingSpeed = 30.0f;
+
+    private OTAnimatingSprite sprite;
 	private FacingDirectionType facingDirection;
+    private bool isMoving = false;
 
 	// Use this for initialization
 	void Start () {
+        sprite = GetComponent<OTAnimatingSprite>();
 		facingDirection = FacingDirectionType.Left;
 		
-		StartCoroutine(MoveATile(0, 1.250f));
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		GetDirectionInput();
-		
-		
+
 	}
 	
 	void GetDirectionInput() {
-		if (Input.GetKey(KeyCode.W)) {
-			Debug.Log("Up");
-			facingDirection = FacingDirectionType.Up;
-		}
-		else if (Input.GetKey(KeyCode.S)) {
-			Debug.Log("Down");
-			facingDirection = FacingDirectionType.Down;
-		}
-		else if (Input.GetKey(KeyCode.A)) {
-			Debug.Log("Left");
-			facingDirection = FacingDirectionType.Left;
-		}
-		else if (Input.GetKey(KeyCode.D)) {
-			Debug.Log("Right");
-			facingDirection = FacingDirectionType.Right;
-		}
+        if (!isMoving)
+        {
+            if (Input.GetKey(KeyCode.W))
+            {
+                //Debug.Log("Direction Input: Up");
+                facingDirection = FacingDirectionType.Up;
+                StartCoroutine(MoveATile(FacingDirectionType.Up, walkingSpeed));
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                //Debug.Log("Direction Input: Down");
+                facingDirection = FacingDirectionType.Down;
+                StartCoroutine(MoveATile(FacingDirectionType.Down, walkingSpeed));
+            }
+            else if (Input.GetKey(KeyCode.A))
+            {
+               // Debug.Log("Direction Input: Left");
+                facingDirection = FacingDirectionType.Left;
+                StartCoroutine(MoveATile(FacingDirectionType.Left, walkingSpeed));
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                //Debug.Log("Direction Input: Right");
+                facingDirection = FacingDirectionType.Right;
+                StartCoroutine(MoveATile(FacingDirectionType.Right, walkingSpeed));
+            }
+        }
 	}
 	
-	IEnumerator MoveATile(int direction, float speed) {
+	IEnumerator MoveATile(FacingDirectionType direction, float speed) {
+        // Keep track of whether we're moving or not.
+        isMoving = true;
+
 		// Convert the speed to time, based on a forced FPS of 60.
 		speed = speed/60.0f;
 		// Find how many pixels to move each tick. (speed 0-60 = 1, 61-120 = 2, etc.)
 		float speedInPixels = Mathf.Floor(speed) + 1;
+
+        // Set the movement vector.
+        Vector3 moveVector = new Vector3();
+        switch (direction)
+        {
+            case (FacingDirectionType.Up) :
+                moveVector = Vector3.up;
+                sprite.PlayOnce("walkUp");
+                break;
+            case (FacingDirectionType.Down):
+                moveVector = Vector3.down;
+                sprite.PlayOnce("walkDown");
+                break;
+            case (FacingDirectionType.Left):
+                moveVector = Vector3.left;
+                sprite.PlayOnce("walkLeft");
+                break;
+            case (FacingDirectionType.Right):
+                moveVector = Vector3.right;
+                sprite.PlayOnce("walkRight");
+                break;
+        }
+        // Save the current position, so we know when to stop.
+        Vector3 originalPosition = transform.position;
 		
 		// Start the move loop.
 		while (true) {
-			// Wait for the tick to happen.
-			yield return new WaitForSeconds((1/60.0f)/speed); // 60 fps.
-			//Move the required number of pixels.
-			transform.Translate(Vector3.left * speedInPixels); // * speed);
+            if (Mathf.Abs(transform.position.x - originalPosition.x) < 16.0f &&
+                Mathf.Abs(transform.position.y - originalPosition.y) < 16.0f)
+            {
+                //Move the required number of pixels.
+                transform.Translate(moveVector * speedInPixels);
+            }
+            else
+            {
+                isMoving = false;
+                break;
+            }
+            // Wait for the tick to happen.
+            yield return new WaitForSeconds((1 / 60.0f) / speed); // 60 fps.
 		}
 	}
 }

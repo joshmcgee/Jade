@@ -1,8 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../../../SevenGun/lightriders/Assets/GUI/scr_ButtonClass.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scr_PlayerControls.cs">
     <Files>
-      <File FileName="../../../SevenGun/lightriders/Assets/GUI/scr_ButtonClass.cs" Line="1" Column="1" />
+      <File FileName="Assets\scr_PlayerControls.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
