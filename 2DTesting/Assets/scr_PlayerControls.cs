@@ -11,6 +11,7 @@ public class scr_PlayerControls : MonoBehaviour {
     private OTAnimatingSprite sprite;
 	private FacingDirectionType facingDirection;
     private bool isMoving = false;
+    private bool rightFootFirst = true;
 
 	// Use this for initialization
 	void Start () {
@@ -66,23 +67,53 @@ public class scr_PlayerControls : MonoBehaviour {
 
         // Set the movement vector.
         Vector3 moveVector = new Vector3();
+
+        rightFootFirst = !rightFootFirst;
         switch (direction)
         {
             case (FacingDirectionType.Up) :
                 moveVector = Vector3.up;
-                sprite.PlayOnce("walkUp");
+                if (rightFootFirst)
+                {
+                    sprite.PlayOnce("walkUp_Right");
+                }
+                else
+                {
+                    sprite.PlayOnce("walkUp_Left");
+                }
                 break;
             case (FacingDirectionType.Down):
                 moveVector = Vector3.down;
-                sprite.PlayOnce("walkDown");
+                if (rightFootFirst)
+                {
+                    sprite.PlayOnce("walkDown_Right");
+                }
+                else
+                {
+                    sprite.PlayOnce("walkDown_Left");
+                }
                 break;
             case (FacingDirectionType.Left):
                 moveVector = Vector3.left;
-                sprite.PlayOnce("walkLeft");
+                if (rightFootFirst)
+                {
+                    sprite.PlayOnce("walkLeft_Right");
+                }
+                else
+                {
+                    sprite.PlayOnce("walkLeft_Left");
+                }
                 break;
             case (FacingDirectionType.Right):
                 moveVector = Vector3.right;
-                sprite.PlayOnce("walkRight");
+                if (rightFootFirst)
+                {
+                    sprite.PlayOnce("walkRight_Right");
+                }
+                else
+                {
+                    sprite.PlayOnce("walkRight_Left");
+                }
                 break;
         }
         // Save the current position, so we know when to stop.
@@ -102,7 +133,7 @@ public class scr_PlayerControls : MonoBehaviour {
                 break;
             }
             // Wait for the tick to happen.
-            yield return new WaitForSeconds((1 / 60.0f) / speed); // 60 fps.
+            yield return new WaitForSeconds((1 / 60.0f)); // / speed); // 60 fps.
 		}
 	}
 }
